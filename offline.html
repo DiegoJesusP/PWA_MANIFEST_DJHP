@@ -4,20 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sin conexión</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#4A90E2">
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <link rel="apple-touch-icon" href="/images/icons/180.png" sizes="180x180">
+  <link rel="apple-touch-icon-precomposed" href="/images/icons/180.png">
+
+  <link rel="icon" href="/images/icons/192.png" type="image/png">
+
   <style>
     body {
-      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #1A202C;
+      color: #fff;
       text-align: center;
-      padding: 2rem;
+      font-family: sans-serif;
     }
-    h1 { color: #c00; }
-    p { color: #555; }
+    a {
+      color: #4A90E2;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
   <h1>Sin conexión</h1>
-  <p>Parece que no tienes acceso a Internet.</p>
-  <p>Por favor, vuelve a intentarlo más tarde.</p>
-  <a href="index.html">Volver al inicio</a>
+  <p>No tienes conexión a internet y esta página no está disponible offline</p>
+  <a href="/">Volver al inicio</a>
 </body>
 </html>

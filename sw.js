@@ -1,9 +1,8 @@
-// sw.js
 const STATIC_CACHE = 'static-cache-v2';
 const DYNAMIC_CACHE = 'dynamic-cache-v1';
 
 const APP_SHELL = [
-  '/', 
+  '/',
   '/index.html',
   '/calendar.html',
   '/form.html',
@@ -20,6 +19,7 @@ self.addEventListener('install', event => {
       return cache.addAll(APP_SHELL);
     })
   );
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
@@ -36,14 +36,17 @@ self.addEventListener('activate', event => {
       )
     )
   );
+  self.clients.claim();
 });
 
 self.addEventListener('fetch', event => {
+  if (event.request.url.startsWith('chrome-extension')) return;
+
   event.respondWith(
-    caches.match(event.request).then(cacheResponse => {
-      if (cacheResponse) {
-        console.log(`[Cache] Usando: ${event.request.url}`);
-        return cacheResponse;
+    caches.match(event.request).then(cachedResponse => {
+      if (cachedResponse) {
+        console.log(`[Cache] Sirviendo desde caché: ${event.request.url}`);
+        return cachedResponse;
       }
 
       return fetch(event.request)
@@ -54,16 +57,23 @@ self.addEventListener('fetch', event => {
           ) {
             caches.open(DYNAMIC_CACHE).then(cache => {
               cache.put(event.request, networkResponse.clone());
-              console.log(`[SW] Guardado en caché dinámico: ${event.request.url}`);
+              console.log(`[SW] Guardado dinámicamente: ${event.request.url}`);
             });
           }
+
           return networkResponse;
         })
         .catch(err => {
-          console.warn('[SW] Sin conexión. Mostrando fallback.');
+          console.warn('[SW] Sin conexión o recurso no disponible:', event.request.url);
+
           if (event.request.destination === 'document') {
             return caches.match('/offline.html');
           }
+
+          return new Response('', {
+            status: 503,
+            statusText: 'Sin conexión y sin caché disponible.'
+          });
         });
     })
   );
