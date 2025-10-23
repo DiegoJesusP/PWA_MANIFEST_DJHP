@@ -1,7 +1,7 @@
 {
   "name": "Mi primer aplicación PWA",
   "short_name": "Mi PWA",
-  "start_url": "/index.html",
+  "start_url": "/PWA_MANIFEST_DJHP/index.html",
   "display": "standalone",
   "background_color": "#1A202C",
   "theme_color": "#4A90E2",
